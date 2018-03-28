@@ -13,10 +13,10 @@ Drag `PullRefreshableScrollView.xcodeproj` into your XCode project and add its p
   * *most likely this will be the dataSource and delegate of the enclosed table or collection view ; or the view controller that displays the said table or collection view*
 * attach this delegate class to the `delegate` outlet of the PullRefreshableScrollView in IB
 * implement the only required method in the delegate, `prScrollView(sender:, triggeredOnEdge:) -> Bool`
-  * *it is called everytime the user pulls-to-refresh
+  * *it is called everytime the user pulls-to-refresh*
   * *it indicates the scroll view the user pulled, and the edge (currently top or bottom) on which the user pulled*
-  * *it should return `false` if, for some reason (e.g. network disconnected), the refresh action could not be performed ; and `true` if the refresh action could take place – not whether it succeeded or not, only if it could be actually started`
+  * *it should return `false` if, for some reason (e.g. network disconnected), the refresh action could not be performed ; and `true` if the refresh action could take place – not whether it succeeded or not, only if it could be actually started*
 * implement the accessors that return the accessory view – the views that are shown on the edge that was pulled by the user 
   * *e.g. `var topAccessoryView : (NSView & AccessoryViewForPullRefreshable)?` for the top edge's view*
 * make your accessory views conform to AccessoryViewForPullRefreshable, which is made of various optional methods, matching change in the state of the view
-  * see source code for more details about these methods and notifications
+  * *see source code for more details about these methods and notifications*
