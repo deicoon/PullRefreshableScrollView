@@ -27,12 +27,13 @@ import Cocoa
 
 @objc public protocol PullRefreshableScrollViewDelegate : NSObjectProtocol {
     //called when the view is pulled far enough to trigger the pull-to-refresh
-    @objc func prScrollView(_ sender: PullRefreshableScrollView, triggeredOnEdge: PullRefreshableScrollView.ViewEdge)
+    //returning false immediately hides the accessory view ; it is good practice to provide an error message to the user when this happens
+    @objc func prScrollView(_ sender: PullRefreshableScrollView, triggeredOnEdge: PullRefreshableScrollView.ViewEdge) -> Bool
     
     @objc optional var topAccessoryView : (NSView & AccessoryViewForPullRefreshable)? { get }
-    @objc optional var leftAccessoryView : (NSView & AccessoryViewForPullRefreshable)? { get }
+    //@objc optional var leftAccessoryView : (NSView & AccessoryViewForPullRefreshable)? { get }
     //@objc optional var rightAccessoryView : (NSView & AccessoryViewForPullRefreshable)? { get }
-    //@objc optional var bottomAccessoryView : (NSView & AccessoryViewForPullRefreshable)? { get }
+    @objc optional var bottomAccessoryView : (NSView & AccessoryViewForPullRefreshable)? { get }
     //those accessors are called every time an accessory view may appear ; we're not keeping any reference to these views – it's UP TO YOU.
     //return nil in these accessors will disable pull-to-refresh for the matching side of the scroll view
 }
@@ -142,7 +143,11 @@ public class PullRefreshableScrollView: NSScrollView {
             view?.viewDidEnterValidationArea?(self)
         case .stuck:
             view?.viewDidStick?(self)
-            delegate?.prScrollView(self, triggeredOnEdge: .top)
+            if let succeeded = delegate?.prScrollView(self, triggeredOnEdge: .top) {
+                if !succeeded {
+                    params[edge]!.resetScroll()
+                }
+            }
         }
     }
     
@@ -214,7 +219,7 @@ public class PullRefreshableScrollView: NSScrollView {
     
     internal lazy var top = TopEdgeParameters(self, edge: .top)
     internal lazy var bottom = BottomEdgeParameters(self, edge: .bottom)
-    
+    internal lazy var params : [ViewEdge : EdgeParameters & EdgeScrollBehavior] = [.top : top, .bottom : bottom]
     
     
     override public func viewDidMoveToWindow() {
