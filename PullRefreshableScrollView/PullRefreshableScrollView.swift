@@ -31,9 +31,10 @@ import Cocoa
     
     @objc optional var topAccessoryView : (NSView & AccessoryViewForPullRefreshable)? { get }
     @objc optional var leftAccessoryView : (NSView & AccessoryViewForPullRefreshable)? { get }
-    @objc optional var rightAccessoryView : (NSView & AccessoryViewForPullRefreshable)? { get }
-    @objc optional var bottomAccessoryView : (NSView & AccessoryViewForPullRefreshable)? { get }
+    //@objc optional var rightAccessoryView : (NSView & AccessoryViewForPullRefreshable)? { get }
+    //@objc optional var bottomAccessoryView : (NSView & AccessoryViewForPullRefreshable)? { get }
     //those accessors are called every time an accessory view may appear ; we're not keeping any reference to these views – it's UP TO YOU.
+    //return nil in these accessors will disable pull-to-refresh for the matching side of the scroll view
 }
 
 @objc public protocol AccessoryViewForPullRefreshable {
