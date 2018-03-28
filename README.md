@@ -20,3 +20,5 @@ Drag `PullRefreshableScrollView.xcodeproj` into your XCode project and add its p
   * *e.g. `var topAccessoryView : (NSView & AccessoryViewForPullRefreshable)?` for the top edge's view*
 * make your accessory views conform to AccessoryViewForPullRefreshable, which is made of various optional methods, matching change in the state of the view
   * *see source code for more details about these methods and notifications*
+
+**Note that an example application is embedded for you to play around with.**
