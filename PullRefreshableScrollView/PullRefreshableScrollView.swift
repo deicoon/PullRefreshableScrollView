@@ -230,13 +230,27 @@ public class PullRefreshableScrollView: NSScrollView {
         self.contentView.postsFrameChangedNotifications = true
         self.contentView.postsBoundsChangedNotifications = true
         
-        NotificationCenter.default.addObserver(self, selector: #selector(viewBoundsChanged(_:)), name: NSView.boundsDidChangeNotification, object: self.contentView)
+        NotificationCenter.default.addObserver(self, selector: #selector(clipViewBoundsChanged(_:)), name: NSView.boundsDidChangeNotification, object: self.contentView)
+        NotificationCenter.default.addObserver(self, selector: #selector(scrollViewFrameChanged(_:)), name: NSView.frameDidChangeNotification, object: self)
         
         placeAccessoryView(self.top.accessoryView, onEdge: .top)
         placeAccessoryView(self.bottom.accessoryView, onEdge: .bottom)
     }
 
-    @objc internal func viewBoundsChanged(_ notification: NSNotification) {
+    @objc internal func scrollViewFrameChanged(_ notification: NSNotification) {
+        guard let documentView = self.documentView else { return }
+        let contentRect = documentView.frame
+        
+        if let view = top.accessoryView {
+            view.frame = NSMakeRect(0, contentRect.minY - view.frame.height, contentRect.size.width, view.frame.height)
+        }
+        
+        if let view = bottom.accessoryView {
+            view.frame = NSMakeRect(0, contentRect.height, contentRect.size.width, view.frame.height)
+        }
+    }
+    
+    @objc internal func clipViewBoundsChanged(_ notification: NSNotification) {
         if top.viewState != .stuck, self.top.enabled {
             let top = self.top.isOverThreshold
             if (top) {
@@ -261,7 +275,7 @@ public class PullRefreshableScrollView: NSScrollView {
         
         switch edge {
         case .top:
-            view.frame = NSMakeRect(0, 0 - view.frame.height, contentRect.size.width, view.frame.height)
+            view.frame = NSMakeRect(0, contentRect.minY - view.frame.height, contentRect.size.width, view.frame.height)
         case .bottom:
             view.frame = NSMakeRect(0, contentRect.height, contentRect.size.width, view.frame.height)
         }
@@ -275,11 +289,11 @@ public class PullRefreshableScrollView: NSScrollView {
     
     override public func scrollWheel(with theEvent: NSEvent) {
         if theEvent.phase == .began {
-            if top.viewState != .stuck && theEvent.scrollingDeltaY > 0 && verticalScroller!.doubleValue == 0 {
+            if top.viewState != .stuck && top.enabled && theEvent.scrollingDeltaY > 0 && verticalScroller!.doubleValue == 0 {
                 top.viewState = .elastic
             }
             
-            if bottom.viewState != .stuck && theEvent.scrollingDeltaY < 0 && verticalScroller!.doubleValue == 1 {
+            if bottom.viewState != .stuck && bottom.enabled && theEvent.scrollingDeltaY < 0 && verticalScroller!.doubleValue == 1 {
                 bottom.viewState = .elastic
             }
         }

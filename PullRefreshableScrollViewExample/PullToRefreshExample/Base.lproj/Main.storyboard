@@ -709,10 +709,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ia-qX-267" customClass="PullRefreshableScrollView" customModule="PullRefreshableScrollView">
+                            <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ia-qX-267" customClass="PullRefreshableScrollView" customModule="PullRefreshableScrollView">
                                 <rect key="frame" x="20" y="20" width="226" height="230"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <clipView key="contentView" ambiguous="YES" id="PKL-RB-g1G">
+                                <clipView key="contentView" id="PKL-RB-g1G">
                                     <rect key="frame" x="1" y="1" width="224" height="228"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -777,6 +776,12 @@
                                 </connections>
                             </scrollView>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="9Ia-qX-267" secondAttribute="bottom" constant="20" id="43j-hZ-JQk"/>
+                            <constraint firstAttribute="trailing" secondItem="9Ia-qX-267" secondAttribute="trailing" constant="234" id="EbP-0d-qoM"/>
+                            <constraint firstItem="9Ia-qX-267" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="J7S-bu-I3y"/>
+                            <constraint firstItem="9Ia-qX-267" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="oHB-OM-fGQ"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="accessoryView" destination="VZt-d4-r28" id="Pys-2A-ZeD"/>
